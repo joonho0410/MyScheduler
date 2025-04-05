@@ -1,0 +1,32 @@
+.container {
+    position: relative;
+    overflow-x: hidden;
+    height: 480px;
+}
+
+.timeTable {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    background-color: white;
+    color: black;
+
+    .slot {
+        position: relative;
+        display : flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        background-color: white;
+        width: 360px;
+
+        .timeSlot {
+            padding: 0 1rem;
+        }
+        .workSlot {
+            height: 480px;
+        }
+    }
+}
