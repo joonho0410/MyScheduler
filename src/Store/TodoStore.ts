@@ -15,7 +15,7 @@ const useTodoStore = create<TodoState>()((set) => ({
     todoList: [],
     currentTodo: null,
     addTodo: (todo) => set((state) => ({...state, todoList: [...state.todoList, todo]})),
-    deleteTodo: (todo) => set((state) => ({...state, todoList: state.todoList.filter((e) => e !== todo)})),
+    deleteTodo: (todo) => set((state) => ({...state, todoList: state.todoList.filter((e) => e.id !== todo.id)})),
     updateTodo: (todo) => set((state) => state),
     startTodo: (todo) => set((state) => ({...state, currentTodo: todo})),
     endTodo: (todo) => set((state) => ({...state, currentTodo: null}))
