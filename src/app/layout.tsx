@@ -26,6 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <div id='modal'>
+        </div>
         <Header/>
         {children}
       </body>
