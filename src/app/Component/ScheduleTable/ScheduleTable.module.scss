@@ -13,14 +13,13 @@
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
-
+    height: 100%;
     color: black;
 
     .slot {
         position: relative;
         display : flex;
         flex-direction: column;
-        flex-shrink: 0;
         background-color: white;
         width: 360px;
 
@@ -31,7 +30,7 @@
             font-weight: bold;
         }
         .workSlot {
-            height: 480px;
+            flex-grow: 1;
         }
     }
 }
