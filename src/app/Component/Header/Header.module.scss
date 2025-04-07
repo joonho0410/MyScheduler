@@ -1,0 +1,12 @@
+@import '@/Styles/mainThemeColor';
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    padding: 24px;
+    background-color: $primary-color1;
+}
+
