@@ -1,43 +1,23 @@
 import { create } from "zustand";
-import { TodoType } from "@/Types/Todo";
+import ScheduleSlice from "./TodoSlice/Schedule";
+import TodaySlice from "./TodoSlice/Today";
+import SharedSlice from "./TodoSlice/Shared";
 
-interface TodoState {
-    todoList: TodoType[]
-    currentTodo: TodoType | null
-    addTodo: (todo: TodoType) => void;
-    deleteTodo: (todo: TodoType) => void;
-    updateTodo: (todo: TodoType) => void;
-    startTodo: (todo: TodoType) => void;
-    endTodo: () => void;
-}
+import { TodaySliceType } from "./TodoSlice/Today";
+import { ScheduleSliceType } from "./TodoSlice/Schedule";
+import { SharedSliceType } from "./TodoSlice/Shared";
 
-const useTodoStore = create<TodoState>()((set) => ({
-    todoList: [],
-    currentTodo: null,
-    addTodo: (todo) => set((state) => ({...state, todoList: [...state.todoList, todo]})),
-    deleteTodo: (todo) => set((state) => ({...state, todoList: state.todoList.filter((e) => e.id !== todo.id)})),
-    updateTodo: (todo) => set((state) => {
-        const newTodoList = state.todoList.filter((e) => e.id !== todo.id)
-        newTodoList.push(todo)
-        return {...state, todoList: newTodoList}
-    }),
-    startTodo: (todo) => set((state) => {
-        const curDate = new Date();
-        if (state.currentTodo) state.currentTodo.endTime = curDate;
+import { CombineTypes } from "@/Types/Utils";
 
-        state.currentTodo = todo;
-        todo.startTime = curDate;
-        return {...state}
-    }),
-    endTodo: () => set((state) => {
-        const curDate = new Date();
 
-        if (!state.currentTodo) return state;
-        state.currentTodo.endTime = curDate;
-        state.currentTodo = null
+type Slices = [TodaySliceType, ScheduleSliceType, SharedSliceType]
 
-        return {...state}
-    })
+export type TodoStoreType = CombineTypes<Slices>
+
+const useTodoStore = create<TodoStoreType>()((...a) => ({
+    ...ScheduleSlice(...a),
+    ...TodaySlice(...a),
+    ...SharedSlice(...a)
 }))
 
 export default useTodoStore

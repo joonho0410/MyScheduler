@@ -1,9 +1,11 @@
 export type TodoType = {
-    id: string,
-    startTime: Date | null,
-    endTime: Date | null,
+    todoId: string,
     head: String,
     content: String,
-    // state: 'stop' | 'current'
 }
 
+export type ScheduleTodoType = TodoType & {
+    scheduleId: string,
+    startTime: Date,
+    endTime: Date | null,
+}
