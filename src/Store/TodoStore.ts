@@ -20,4 +20,13 @@ const useTodoStore = create<TodoStoreType>()((...a) => ({
     ...SharedSlice(...a)
 }))
 
-export default useTodoStore
+export const useTodoList = useTodoStore((state) => state.todayTodoList)
+export const useScheduleTodoList = useTodoStore((state) => state.ScheduleTodoList)
+export const useCurrentTodo = useTodoStore((state) => state.currentTodo)
+
+export const useTodoActions = {
+    addTodo: useTodoStore((state) => state.addTodo),
+    deleteTodo: useTodoStore((state) => state.deleteTodo),
+    startTodo: useTodoStore((state)=> state.startTodo),
+    endTodo: useTodoStore((state) => state.endTodo)
+}
