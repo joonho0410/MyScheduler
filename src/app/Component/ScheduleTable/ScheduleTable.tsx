@@ -2,7 +2,7 @@
 
 import styles from './ScheduleTable.module.scss'
 import Todo from '../TodoCard/Todo'
-import useTodoStore from '@/Store/TodoStore';
+import { useScheduleTodoList, useCurrentTodo } from '@/Store/TodoStore';
 
 const sampleTodo = {
     startTime: new Date(2025, 3, 3, 1, 0, 0), // 2025년 4월 3일 01:00:00
@@ -20,7 +20,8 @@ for (let i = 0; i < 24; i++) {
 }
 
 const ScheduleTable = () => {
-    const { todoList, currentTodo } = useTodoStore()
+    const todoList = useScheduleTodoList();
+    const currentTodo = useCurrentTodo()
 
     console.log(todoList, currentTodo)
 
@@ -30,7 +31,7 @@ const ScheduleTable = () => {
             {
                 todoList.map((todo) => {
                     if (!todo.startTime) return null
-                    return <Todo key={todo.id} {...todo}></Todo>
+                    return <Todo key={todo.scheduleId} {...todo}></Todo>
                 })
             }
         </div>

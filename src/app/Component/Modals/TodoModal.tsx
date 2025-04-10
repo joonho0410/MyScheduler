@@ -1,5 +1,5 @@
 import useModalStore from '@/Store/ModalStore';
-import useTodoStore from '@/Store/TodoStore';
+import { useTodoActions } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
@@ -13,13 +13,11 @@ type FieldType = {
 
 const TodoModal = () => {
     const { deleteModal } = useModalStore();
-    const { addTodo } = useTodoStore();
+    const { addTodo } = useTodoActions()
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
         const newTodo: TodoType = {
-            id: String(id++),
-            startTime: null,
-            endTime: null,
+            todoId: String(id++),
             head: values.head,
             content: values.content ?? ''
         }

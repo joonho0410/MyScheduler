@@ -3,7 +3,7 @@ import { Dropdown, Space } from 'antd';
 import { useMemo } from 'react';
 
 import useModalStore from '@/Store/ModalStore';
-import useTodoStore from '@/Store/TodoStore';
+import { useTodoActions, useTodoList } from '@/Store/TodoStore';
 import { ModalType } from '@/Types/Modals';
 import { TodoType } from '@/Types/Todo';
 
@@ -16,7 +16,7 @@ const makeItems = (todoList: TodoType[], setModal: (modalType: ModalType) => voi
             label: (
                 <AddTodoButton.Todo todo={todo}/>
             ),
-            key: todo.id
+            key: todo.todoId
         }
         items.push(item)
     })
@@ -27,7 +27,7 @@ const makeItems = (todoList: TodoType[], setModal: (modalType: ModalType) => voi
 }
 
 const AddTodoButton = () => {
-    const { todoList } = useTodoStore();
+    const todoList = useTodoList();
     const { setModal } = useModalStore();
 
     const items = useMemo(() => {
@@ -46,7 +46,7 @@ const AddTodoButton = () => {
 }
 
 const Todo = ({ todo } : { todo: TodoType}) => {
-    const { startTodo } = useTodoStore()
+    const { startTodo } = useTodoActions()
 
     return (
         <div>
