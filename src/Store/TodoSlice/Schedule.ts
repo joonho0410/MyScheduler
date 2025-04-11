@@ -8,8 +8,10 @@ type State = {
 }
 
 type Action = {
-    startTodo: (todo: TodoType) => void
-    endTodo: (todo: ScheduleTodoType) => void
+    scheduleAction: {
+        startTodo: (todo: TodoType) => void
+        endTodo: (todo: TodoType) => void
+    }
 }
 
 export type ScheduleSliceType = State & Action
@@ -25,30 +27,43 @@ const ScheduleSlice: StateCreator<
 >  = (set) => ({
         ScheduleTodoList: [],
         currentTodo: null,
-        startTodo: (todo) => set((state) => {
-            const curDate = new Date();
-            if (state.currentTodo) { 
-                state.currentTodo.endTime = curDate;
-                state.currentTodo = null;
-            }
+        scheduleAction: {
+            startTodo: (todo) => set((state) => {
+                const curDate = new Date();
+                if (state.currentTodo) { 
+                    state.currentTodo.endTime = curDate;
+                    state.currentTodo = null;
+                }
+                const newTodayTodoList = state.todayTodoList.map((e) => {
+                    if (e.todoId === todo.todoId) {
+                        return {...e, isActive: true}
+                    }
+                    return e;
+                })
+                const newCurrentTodo: ScheduleTodoType = {...todo, scheduleId: String(id++), startTime: curDate, endTime: null}
+                const newList = [...state.ScheduleTodoList, newCurrentTodo]
 
-            const newCurrentTodo: ScheduleTodoType = {...todo, scheduleId: String(id++), startTime: curDate, endTime: null}
-            const newList = [...state.ScheduleTodoList, newCurrentTodo]
+                return { todayTodoList: newTodayTodoList, ScheduleTodoList: newList, currentTodo: newCurrentTodo };
+            }),
+            endTodo: (todo) => set((state) => {
+                if (!state.currentTodo) return state;
+                const curDate = new Date();
 
-            return { ScheduleTodoList: newList, currentTodo: newCurrentTodo };
-        }),
-        endTodo: (todo) => set((state) => {
-            if (!state.currentTodo) return state;
-            const curDate = new Date();
+                const newTodayTodoList = state.todayTodoList.map((e) => {
+                    if (e.todoId === todo.todoId) {
+                        return {...e, isActive: false}
+                    }
+                    return e;
+                })
+                const newList = state.ScheduleTodoList.map((e) => {
+                    if (e.endTime) return e;
+                    e.endTime = curDate;
+                    return e;
+                })
 
-            const newList = state.ScheduleTodoList.map((e) => {
-                if (e.scheduleId !== todo.scheduleId) return e;
-                e.endTime = curDate;
-                return e;
+                return {todayTodoList: newTodayTodoList, currentTodo: null, ScheduleTodoList: newList}
             })
-
-            return {currentTodo: null, ScheduleTodoList: newList}
-        })
+        }
     })
 
 export default ScheduleSlice

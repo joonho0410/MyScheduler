@@ -25,15 +25,11 @@ export const useScheduleTodoList = () => useTodoStore((state) => state.ScheduleT
 export const useCurrentTodo = () => useTodoStore((state) => state.currentTodo)
 
 export const useTodoActions = () => {
-    const addTodo =  useTodoStore((state) => state.addTodo)
-    const deleteTodo = useTodoStore((state) => state.deleteTodo)
-    const startTodo = useTodoStore((state)=> state.startTodo)
-    const endTodo = useTodoStore((state) => state.endTodo)
+    const todayAction = useTodoStore((state) => state.todayAction)
+    const scheduleAction = useTodoStore((state) => state.scheduleAction)
 
     return {
-        addTodo,
-        deleteTodo,
-        startTodo,
-        endTodo
+        ...todayAction,
+        ...scheduleAction
     }
 }
