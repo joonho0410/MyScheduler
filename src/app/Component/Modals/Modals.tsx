@@ -18,7 +18,9 @@ const Modals = () => {
           {
             modalList.map((type) => (
                 <div key={type} className={styles.modals_Container} onClick={(e) => {e.stopPropagation(); deleteModal(type)}}>
-                    {getModal(type)}
+                    <div className={styles.modals_contents} onClick={(e) => e.stopPropagation()}>
+                        {getModal(type)}
+                    </div>
                 </div>
             ))
           }

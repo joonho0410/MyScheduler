@@ -1,17 +1,10 @@
 'use client'
 
+import { TodoType } from '@/Types/Todo';
 import styles from './Todo.module.scss'
 
-type TodoProps = {
-    startTime: Date;
-    endTime: Date;
-    head: string;
-    content: string; 
-    done: boolean;
-}
-
-const Todo = (props: TodoProps) => {
-    const start = props.startTime.getHours() * 60 + props.startTime.getMinutes()
+const Todo = (props: TodoType) => {
+    const start = props.startTime ? props.startTime.getHours() * 60 + props.startTime.getMinutes() : 0
     const innerStyle = start / 1440 * 8640;
 
     return (

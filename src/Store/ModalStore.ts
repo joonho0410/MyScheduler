@@ -3,13 +3,16 @@ import { ModalType } from "@/Types/Modals";
 
 // 같은 모달이 중첩될 수 있나? 있다면 id 사용이 필요할듯?
 
-interface ModalState {
-    modalList : ModalType[]
-    setModal: (modalType: ModalType) => void
-    deleteModal: (modalType: ModalType) => void
+type State = {
+    modalList: ModalType[]
 }
 
-const useModalStore = create<ModalState>()((set) => ({
+type Action = {
+    setModal: (modalType: ModalType) => void
+    deleteModal: (modalType: ModalType) => void    
+}
+
+const useModalStore = create<State & Action>()((set) => ({
     modalList : [],
     setModal: (modalType) => set((state) => {
         if (state.modalList.includes(modalType)) return state

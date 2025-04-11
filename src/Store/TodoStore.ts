@@ -1,24 +1,35 @@
 import { create } from "zustand";
-import { TodoType } from "@/Types/Todo";
+import ScheduleSlice from "./TodoSlice/Schedule";
+import TodaySlice from "./TodoSlice/Today";
+import SharedSlice from "./TodoSlice/Shared";
 
-interface TodoState {
-    todoList: TodoType[]
-    currentTodo: TodoType | null
-    addTodo: (todo: TodoType) => void;
-    deleteTodo: (todo: TodoType) => void;
-    updateTodo: (todo: TodoType) => void;
-    startTodo: (todo: TodoType) => void;
-    endTodo: (todo: TodoType) => void;
-}
+import { TodaySliceType } from "./TodoSlice/Today";
+import { ScheduleSliceType } from "./TodoSlice/Schedule";
+import { SharedSliceType } from "./TodoSlice/Shared";
 
-const useTodoStore = create<TodoState>()((set) => ({
-    todoList: [],
-    currentTodo: null,
-    addTodo: (todo) => set((state) => ({...state, todoList: [...state.todoList, todo]})),
-    deleteTodo: (todo) => set((state) => ({...state, todoList: state.todoList.filter((e) => e.id !== todo.id)})),
-    updateTodo: (todo) => set((state) => state),
-    startTodo: (todo) => set((state) => ({...state, currentTodo: todo})),
-    endTodo: (todo) => set((state) => ({...state, currentTodo: null}))
+import { CombineTypes } from "@/Types/Utils";
+
+
+type Slices = [TodaySliceType, ScheduleSliceType, SharedSliceType]
+
+export type TodoStoreType = CombineTypes<Slices>
+
+const useTodoStore = create<TodoStoreType>()((...a) => ({
+    ...ScheduleSlice(...a),
+    ...TodaySlice(...a),
+    ...SharedSlice(...a)
 }))
 
-export default useTodoStore
+export const useTodoList = () => useTodoStore((state) => state.todayTodoList)
+export const useScheduleTodoList = () => useTodoStore((state) => state.ScheduleTodoList)
+export const useCurrentTodo = () => useTodoStore((state) => state.currentTodo)
+
+export const useTodoActions = () => {
+    const todayAction = useTodoStore((state) => state.todayAction)
+    const scheduleAction = useTodoStore((state) => state.scheduleAction)
+
+    return {
+        ...todayAction,
+        ...scheduleAction
+    }
+}

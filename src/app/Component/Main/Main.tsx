@@ -2,8 +2,9 @@
 
 import useModalStore from '@/Store/ModalStore'
 import Modals from '../Modals/Modals'
-import styles from './Main.module.scss'
 import dynamic from 'next/dynamic'
+import styles from './Main.module.scss'
+import AddTodoButton from '../Buttons/AddTodoButton/AddTodoButton'
 
 const ModalContainer = dynamic(() => import('../Modals/ModalContainer'), { ssr: false })
 
@@ -12,7 +13,7 @@ const Main = () => {
 
     return (
         <div className={styles.main}>
-            <button onClick={() => setModal('create_Todo')}> 할일 추가 </button>
+            <AddTodoButton/>
             <ModalContainer>
                 <Modals/>
             </ModalContainer>
