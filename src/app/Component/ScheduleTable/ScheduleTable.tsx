@@ -3,15 +3,7 @@
 import styles from './ScheduleTable.module.scss'
 import Todo from '../TodoCard/Todo'
 import { useScheduleTodoList, useCurrentTodo } from '@/Store/TodoStore';
-
-const sampleTodo = {
-    startTime: new Date(2025, 3, 3, 1, 0, 0), // 2025년 4월 3일 01:00:00
-    endTime: new Date(2025, 3, 3, 2, 0, 0),   // 2025년 4월 3일 02:00:00
-    head: '테스트',
-    content: '테스트', 
-    done: true
-}
-
+import useDragMove from '@/Hooks/useDragMove';
 
 const timeArray: string[] = [];
 
@@ -27,21 +19,26 @@ const ScheduleTable = () => {
 
     return (
         <div className={styles.container}>
-            <ScheduleTable.TimeTable/>
+            <ScheduleTable.TimeTable>
             {
                 todoList.map((todo) => {
                     if (!todo.startTime) return null
                     return <Todo key={todo.scheduleId} {...todo}></Todo>
                 })
             }
+            </ScheduleTable.TimeTable>
         </div>
     )
 }
 
 const TimeTable = ({children} : {children? : any}) => {
+    const { position, handleMouseDown } = useDragMove()
 
     return (
-        <div className={styles.timeTable}> 
+        <div className={styles.timeTable}
+            onMouseDown={handleMouseDown}
+            style={{left: `${position.x}px`}}
+        > 
             {timeArray.map((time : string) => {
                 return (
                     <div key={time} className={styles.slot}>

@@ -1,14 +1,33 @@
 'use client'
 
-import { TodoType } from '@/Types/Todo';
+import { ScheduleTodoType } from '@/Types/Todo';
 import styles from './Todo.module.scss'
+import { useEffect, useState } from 'react';
+import calculateMinutes from '@/Utils/calculateMinutes';
 
-const Todo = (props: TodoType) => {
-    const start = props.startTime ? props.startTime.getHours() * 60 + props.startTime.getMinutes() : 0
+const Todo = (props: ScheduleTodoType) => {
+    const start = calculateMinutes(props.startTime)
+    const [doingTime, setDoingTime] = useState(props.endTime ? calculateMinutes(props.endTime) - start : 0)
+    
     const innerStyle = start / 1440 * 8640;
 
+    console.log(doingTime)
+
+    useEffect(() => {
+        let id: NodeJS.Timeout | undefined = undefined;
+        if (!props.endTime) id = setInterval(() => {
+            setDoingTime((state) => state + 1)
+        }, 1000)
+
+        return () => clearInterval(id)
+    }, [props.endTime])
+
     return (
-        <div className={styles.Todo} style={{ left: `${innerStyle}px` }}>
+        <div className={styles.Todo} style={{
+            left: `${innerStyle}px`,
+            transform: `scaleX(${doingTime / 60})`,
+            transformOrigin: 'left',
+        }}>
             Todo
         </div>
     )
