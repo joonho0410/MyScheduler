@@ -55,8 +55,7 @@ const Todo = ({ todo } : { todo: TodoType}) => {7
             {todo.isActive 
                 ? <button onClick={() => endTodo(todo)}> end</button> 
                 : <button onClick={() => startTodo(todo)}> start </button>
-            
-            <button> update </button>
+            }
         </div>
     )
 }

@@ -11,13 +11,6 @@ for (let i = 0; i < 24; i++) {
   timeArray.push(i.toString().padStart(2, '0'));
 }
 
-
-const timeArray: string[] = [];
-
-for (let i = 0; i < 24; i++) {
-  timeArray.push(i.toString().padStart(2, '0'));
-}
-
 const ScheduleTable = () => {
     const todoList = useScheduleTodoList();
     const currentTodo = useCurrentTodo()
