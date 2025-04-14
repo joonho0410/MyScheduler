@@ -36,9 +36,9 @@ const ScheduleSlice: StateCreator<
                 }
                 const newTodayTodoList = state.todayTodoList.map((e) => {
                     if (e.todoId === todo.todoId) {
-                        return {...e, isActive: true}
+                        return { ...e, isActive: true }
                     }
-                    return e;
+                    return { ...e, isActive: false };
                 })
                 const newCurrentTodo: ScheduleTodoType = {...todo, scheduleId: String(id++), startTime: curDate, endTime: null}
                 const newList = [...state.ScheduleTodoList, newCurrentTodo]

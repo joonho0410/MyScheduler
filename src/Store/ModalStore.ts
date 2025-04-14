@@ -8,17 +8,22 @@ type State = {
 }
 
 type Action = {
-    setModal: (modalType: ModalType) => void
-    deleteModal: (modalType: ModalType) => void    
+    action : {
+        setModal: (modalType: ModalType) => void
+        deleteModal: (modalType: ModalType) => void    
+    }
 }
 
 const useModalStore = create<State & Action>()((set) => ({
     modalList : [],
-    setModal: (modalType) => set((state) => {
-        if (state.modalList.includes(modalType)) return state
-        return ({modalList: [...state.modalList, modalType]})
-    }),
-    deleteModal: (modalType) => set((state) => ({modalList: state.modalList.filter((e) => e !== modalType )})) 
+    action : {
+        setModal: (modalType) => set((state) => {
+            if (state.modalList.includes(modalType)) return state
+            return ({modalList: [...state.modalList, modalType]})
+        }),
+        deleteModal: (modalType) => set((state) => ({modalList: state.modalList.filter((e) => e !== modalType )})) 
+    }
 }))
 
-export default useModalStore
+export const useModalList = () => useModalStore((state) => state.modalList)
+export const useModalActions = () => useModalStore((state) => state.action)

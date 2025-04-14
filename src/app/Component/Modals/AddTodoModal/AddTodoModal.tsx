@@ -1,4 +1,4 @@
-import useModalStore from '@/Store/ModalStore';
+import { useModalActions } from '@/Store/ModalStore';
 import { useTodoActions } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
 import type { FormProps } from 'antd';
@@ -12,7 +12,7 @@ type FieldType = {
 };
 
 const TodoModal = () => {
-    const { deleteModal } = useModalStore();
+    const { deleteModal } = useModalActions();
     const { addTodo } = useTodoActions()
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
