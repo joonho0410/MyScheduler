@@ -1,17 +1,20 @@
-import useModalStore from '@/Store/ModalStore'
+import { useModalActions, useModalList } from '@/Store/ModalStore'
 import styles from './Modals.module.scss'
-import TodoModal from './TodoModal'
+import TodoModal from './AddTodoModal/AddTodoModal'
 import { ModalType } from '@/Types/Modals'
+import TodoControllModal from './TodoControllerModal/TodoControllerModal'
 
 const getModal = (type: ModalType) => {
     switch(type) {
         case 'create_Todo' : return <TodoModal/>
+        case 'controll_Todo' : return <TodoControllModal/>
         default: null;
     }
 }
 
 const Modals = () => {
-    const { modalList, setModal, deleteModal } = useModalStore()
+    const modalList = useModalList();
+    const { setModal, deleteModal } = useModalActions();
     
     return (
         <>
