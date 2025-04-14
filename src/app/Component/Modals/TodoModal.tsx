@@ -2,7 +2,7 @@ import useModalStore from '@/Store/ModalStore';
 import { useTodoActions } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 let id = 1;
 
@@ -19,7 +19,8 @@ const TodoModal = () => {
         const newTodo: TodoType = {
             todoId: String(id++),
             head: values.head,
-            content: values.content ?? ''
+            content: values.content ?? '',
+            isActive: false
         }
         addTodo(newTodo);
         deleteModal('create_Todo')
