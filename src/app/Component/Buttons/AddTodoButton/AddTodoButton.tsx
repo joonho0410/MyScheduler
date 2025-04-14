@@ -45,7 +45,7 @@ const AddTodoButton = () => {
     )
 }
 
-const Todo = ({ todo } : { todo: TodoType}) => {
+const Todo = ({ todo } : { todo: TodoType}) => {7
     const { startTodo, endTodo } = useTodoActions()
 
     console.log('todo : ', todo)
@@ -55,7 +55,7 @@ const Todo = ({ todo } : { todo: TodoType}) => {
             {todo.isActive 
                 ? <button onClick={() => endTodo(todo)}> end</button> 
                 : <button onClick={() => startTodo(todo)}> start </button>
-            }
+            
             <button> update </button>
         </div>
     )

@@ -5,6 +5,7 @@ import styles from './Todo.module.scss'
 import { useEffect, useState } from 'react';
 import calculateMinutes from '@/Utils/calculateMinutes';
 
+
 const Todo = (props: ScheduleTodoType) => {
     const start = calculateMinutes(props.startTime)
     const [doingTime, setDoingTime] = useState(props.endTime ? calculateMinutes(props.endTime) - start : 0)
