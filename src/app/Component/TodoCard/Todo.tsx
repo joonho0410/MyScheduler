@@ -3,7 +3,7 @@
 import { ScheduleTodoType } from '@/Types/Todo';
 import styles from './Todo.module.scss'
 import { useEffect, useState } from 'react';
-import calculateMinutes from '@/Utils/calculateMinutes';
+import { calculateMinutes } from '@/Utils/calculateTime';
 
 
 const Todo = (props: ScheduleTodoType) => {
