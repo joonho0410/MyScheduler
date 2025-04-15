@@ -1,8 +1,12 @@
 export type TodoType = {
     todoId: string,
-    head: String,
-    content: String,
+    head: string,
+    content: string,
     isActive: boolean
+}
+
+export type ChartTodoType = TodoType & {
+    totalTime: number
 }
 
 export type ScheduleTodoType = TodoType & {
