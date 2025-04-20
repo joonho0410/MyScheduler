@@ -1,14 +1,10 @@
-'use client'
+'use client';
 
-import { ThemeProvider } from "@mui/material";
-import theme from "@/theme";
+import theme from '@/theme';
+import { ThemeProvider } from '@mui/material';
 
-const CustomThemeProvider= ({children} : {children: React.ReactNode}) => {
-    return (
-        <ThemeProvider theme={theme}>
-            {children}
-        </ThemeProvider>
-    )
-}
+const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};
 
-export default CustomThemeProvider
+export default CustomThemeProvider;

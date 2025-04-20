@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import { ChartTodoType } from '@/Types/Todo';
+import { TodoType } from '@/Types/Todo';
 import * as d3 from 'd3';
 import React, { useRef, useEffect, Dispatch, SetStateAction } from 'react';
-import { TodoType } from '@/Types/Todo';
 
 type PieChartProps = {
   data: ChartTodoType[];
@@ -23,15 +23,14 @@ const PieChart = ({ data, setSelected }: PieChartProps) => {
     const color = d3.scaleOrdinal<string, string>(d3.schemeCategory10);
 
     const pie = d3.pie<ChartTodoType>().value(d => d.totalTime);
-    const arc = d3.arc<d3.PieArcDatum<ChartTodoType>>()
-      .innerRadius(0)
-      .outerRadius(radius);
+    const arc = d3.arc<d3.PieArcDatum<ChartTodoType>>().innerRadius(0).outerRadius(radius);
 
     // 초기화 (중복 방지)
     d3.select(ref.current).selectAll('*').remove();
 
     // SVG 뷰박스 설정
-    const svg = d3.select(ref.current)
+    const svg = d3
+      .select(ref.current)
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', `0 0 ${width} ${height}`) // 뷰박스 추가
@@ -41,7 +40,8 @@ const PieChart = ({ data, setSelected }: PieChartProps) => {
 
     const arcs = pie(data);
 
-    svg.selectAll('path')
+    svg
+      .selectAll('path')
       .data(arcs)
       .enter()
       .append('path')
@@ -51,31 +51,33 @@ const PieChart = ({ data, setSelected }: PieChartProps) => {
       .style('stroke-width', '2px')
       .style('cursor', 'pointer')
       .on('click', function (event, d) {
-        svg.selectAll('path')
-        .transition()
-        .duration(300)
-        .attr('transform', 'translate(0,0) scale(1)')
-        .style('opacity', 1)
-        .style('stroke-width', '2px')
-        .style('stroke', 'white') // 원래 stroke로
+        svg
+          .selectAll('path')
+          .transition()
+          .duration(300)
+          .attr('transform', 'translate(0,0) scale(1)')
+          .style('opacity', 1)
+          .style('stroke-width', '2px')
+          .style('stroke', 'white'); // 원래 stroke로
 
         // 2. 클릭한 조각의 중심 좌표 구해서 살짝 이동
         const [x, y] = arc.centroid(d);
         const offsetX = x * 0.2; // 살짝 튀어나오게 (비율 조절 가능)
         const offsetY = y * 0.2;
-        
+
         d3.select(event.currentTarget)
-        .transition()
-        .duration(300)
-        .attr('transform', `translate(${offsetX}, ${offsetY}) scale(1.1)`) // scale을 조금 더 크게
-        .style('opacity', 0.6)
-        .style('stroke', '#222')
-        .style('stroke-width', '5px');
+          .transition()
+          .duration(300)
+          .attr('transform', `translate(${offsetX}, ${offsetY}) scale(1.1)`) // scale을 조금 더 크게
+          .style('opacity', 0.6)
+          .style('stroke', '#222')
+          .style('stroke-width', '5px');
 
-        setSelected(d.data)
-      })
+        setSelected(d.data);
+      });
 
-    svg.selectAll('text')
+    svg
+      .selectAll('text')
       .data(arcs)
       .enter()
       .append('text')
@@ -83,7 +85,6 @@ const PieChart = ({ data, setSelected }: PieChartProps) => {
       .attr('text-anchor', 'middle')
       .text(d => d.data.head)
       .style('font-size', '12px');
-
   }, [data]);
 
   return <svg ref={ref}></svg>;

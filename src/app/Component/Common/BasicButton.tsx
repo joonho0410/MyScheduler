@@ -4,12 +4,16 @@
 import { Button, ButtonProps } from '@mui/material';
 import { forwardRef } from 'react';
 
+// components/BasicButton.tsx
+
+// components/BasicButton.tsx
+
 const BasicButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   return (
     <Button
       ref={ref}
       {...props}
-      sx={(theme) => ({
+      sx={theme => ({
         backgroundColor: theme.palette.custom.button.primary,
         color: 'black',
         border: `1px solid ${theme.palette.custom.button.darker}`,
