@@ -1,8 +1,14 @@
 export type TodoType = {
   todoId: string;
   head: string;
-  content: string;
+  content: string | TodoSubtaskType[];
   isActive: boolean;
+};
+
+export type TodoSubtaskType = {
+  id: string;
+  title: string;
+  completed: boolean;
 };
 
 export type ChartTodoType = TodoType & {

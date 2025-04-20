@@ -4,9 +4,11 @@ import ShowTodayModal from './ShowTodayModal/ShowTodayModal';
 import TodoControllModal from './TodoControllerModal/TodoControllerModal';
 import { useModalActions, useModalList } from '@/Store/ModalStore';
 import { ModalType } from '@/Types/Modals';
-import { Box } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import { Box, IconButton } from '@mui/material';
+import { ReactNode } from 'react';
 
-const s1 = {
+const modalBackgroundStyle = {
   display: 'flex', // flexbox를 사용하여 배치
   justifyContent: 'center', // 가운데 정렬
   alignItems: 'center', // 세로로 가운데 정렬
@@ -19,7 +21,10 @@ const s1 = {
   zIndex: 999, // 다른 요소들보다 위에 표시
 };
 
-const s2 = {
+const modalContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'relative',
   backgroundColor: 'white', // 모달의 배경색
   borderRadius: '8px', // 모서리 둥글게
   padding: '20px', // 안쪽 여백
@@ -44,30 +49,68 @@ const getModal = (type: ModalType) => {
 
 const Modals = () => {
   const modalList = useModalList();
-  const { deleteModal } = useModalActions();
 
   return (
     <>
-      {modalList.map((type, idx) => (
-        <Box
-          key={type}
-          sx={{ ...s1, zIndex: 999 - idx }}
-          onClick={e => {
-            e.stopPropagation();
-            deleteModal(type); // 모달 삭제
-          }}
-        >
-          <Box
-            sx={s2}
-            onClick={e => e.stopPropagation()} // 클릭 이벤트 전파 막기
-          >
-            <button onClick={() => deleteModal(type)}>X</button>
-            {getModal(type)} {/* 모달 콘텐츠 */}
-          </Box>
-        </Box>
-      ))}
+      {modalList.map((type, idx) => {
+        return (
+          <Modals.Background key={type} type={type} idx={idx}>
+            <Modals.Container type={type}>{getModal(type)}</Modals.Container>
+          </Modals.Background>
+        );
+      })}
     </>
   );
 };
+
+const ModalsBackground = ({
+  type,
+  idx,
+  children,
+}: {
+  type: ModalType;
+  idx: number;
+  children: React.ReactNode;
+}) => {
+  const { deleteModal } = useModalActions();
+
+  return (
+    <Box
+      sx={{ ...modalBackgroundStyle, zIndex: idx + 100 }}
+      onClick={e => {
+        e.stopPropagation();
+        deleteModal(type); // 모달 삭제
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+const ModalsContainer = ({ type, children }: { type: ModalType; children: ReactNode }) => {
+  const { deleteModal } = useModalActions();
+
+  return (
+    <Box sx={modalContainerStyle} onClick={e => e.stopPropagation()}>
+      <IconButton
+        onClick={() => deleteModal(type)}
+        aria-label="close"
+        sx={{
+          alignSelf: 'end',
+          color: 'grey.500',
+          '&:hover': {
+            color: 'grey.800',
+          },
+        }}
+      >
+        <Close />
+      </IconButton>
+      {children}
+    </Box>
+  );
+};
+
+Modals.Background = ModalsBackground;
+Modals.Container = ModalsContainer;
 
 export default Modals;

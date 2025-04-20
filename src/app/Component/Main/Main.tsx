@@ -4,7 +4,6 @@ import BasicButton from '../Common/BasicButton';
 import Modals from '../Modals/Modals';
 import styles from './Main.module.scss';
 import { useModalActions } from '@/Store/ModalStore';
-import { Button } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 const ModalContainer = dynamic(() => import('../Modals/ModalContainer'), { ssr: false });
