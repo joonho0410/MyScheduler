@@ -3,6 +3,8 @@ import { useModalActions } from '@/Store/ModalStore';
 import { useTodoActions, useTodoList } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
 import { useCallback } from 'react';
+import ListBox from '../../Common/ListBox';
+import ListTodoItem from '../../ListCard/ListTodoItem';
 
 const TodoControllModal = () => {
   const todoList = useTodoList();
@@ -11,11 +13,7 @@ const TodoControllModal = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.head}>오늘 할 일</h2>
-      <div className={styles.todos}>
-        {todoList.map(e => (
-          <TodoControllModal.TodoContent {...e} key={e.todoId} />
-        ))}
-      </div>
+      <ListBox items={todoList} itemKey='todoId' ContentComponent={ListTodoItem}/>
       <button onClick={() => setModal('create_Todo')}>할일 추가</button>
     </div>
   );
