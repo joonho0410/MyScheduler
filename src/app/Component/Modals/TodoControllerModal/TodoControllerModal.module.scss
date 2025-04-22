@@ -17,20 +17,6 @@
     width: 100%;
     margin-bottom: 24px;
   }
-  button {
-    padding: 10px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    background-color: #3498db;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  button:hover {
-    background-color: #2980b9;
-  }
 }
 
 .TodoContent {
@@ -50,20 +36,5 @@
     display: flex;
     gap: 6px;
     white-space: nowrap;
-
-    button {
-      padding: 6px 12px;
-      background-color: #4caf50; /* 초록색 배경 */
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
   }
 }

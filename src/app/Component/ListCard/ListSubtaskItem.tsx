@@ -1,14 +1,31 @@
 // components/SubtaskItem.tsx
+import {
+  Checkbox,
+  ButtonGroup,
+  Button,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Box,
+} from '@mui/material';
 import React from 'react';
-import { Checkbox, ButtonGroup, Button, ListItem, ListItemButton, ListItemText } from '@mui/material';
+
+const containerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  padding: 1,
+  border: '1px solid #ccc',
+  borderRadius: 2,
+  backgroundColor: '#f9f9f9',
+};
 
 type SubtaskItemProps = { id: string; title: string; completed: boolean };
 
 const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
-    const dummy = () => {}
+  const dummy = () => {};
 
   return (
-    <div key={subtask.id} style={{ display: 'flex' }}>
+    <Box key={subtask.id} sx={containerStyle}>
       <Checkbox
         color="success"
         edge="end"
@@ -18,8 +35,14 @@ const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
       <ListItem
         secondaryAction={
           <ButtonGroup variant="outlined" aria-label="Basic button group">
-            <Button color="info" onClick={dummy}> Edit </Button>
-            <Button color="error" onClick={dummy}> Delete </Button>
+            <Button color="info" onClick={dummy}>
+              {' '}
+              Edit{' '}
+            </Button>
+            <Button color="error" onClick={dummy}>
+              {' '}
+              Delete{' '}
+            </Button>
           </ButtonGroup>
         }
         disablePadding
@@ -41,7 +64,7 @@ const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
           />
         </ListItemButton>
       </ListItem>
-    </div>
+    </Box>
   );
 };
 

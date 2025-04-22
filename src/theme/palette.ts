@@ -4,6 +4,7 @@ import { PaletteOptions } from '@mui/material';
 const palette: PaletteOptions = {
   primary: {
     main: colors.primaryMain,
+    contrastText: colors.primaryContrast,
   },
   background: {
     default: '#fff',

@@ -1,6 +1,7 @@
 const colors = {
   // Primary 계열
   primaryMain: '#9FB3DF', // 메인 색상
+  primaryContrast: '#1A1A1A',
 
   // 버튼 색상
   primaryLight: '#9EC6F3',

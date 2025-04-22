@@ -1,23 +1,72 @@
-// components/Todo/ListTodoItem.tsx
+import { useModalActions } from '@/Store/ModalStore';
+import { useTodoActions } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
-import { useTodoActions } from '@/Store/TodoStore';;
-// import styles from './TodoContent.module.scss';
+import { Box, Button, ButtonGroup } from '@mui/material';
+
+const containerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  padding: 1,
+  border: '1px solid #ccc',
+  borderRadius: 2,
+  backgroundColor: '#f9f9f9',
+};
+
+const headTextStyle = {
+  flexGrow: 1,
+  fontWeight: 'bold',
+  fontSize: '1.1rem',
+  textAlign: 'center',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+};
 
 const ListTodoItem = (props: TodoType) => {
   const { startTodo, endTodo } = useTodoActions();
+  const { setModal } = useModalActions();
 
   return (
-    <div>
-      <span>{props.head}</span>
-      <div>
+    <Box sx={containerStyle} onClick={() => setModal('create_Todo')}>
+      <Box sx={headTextStyle}>{props.head}</Box>
+      <ButtonGroup size="small" variant="outlined" aria-label="Basic button group">
         {props.isActive ? (
-          <button onClick={() => endTodo(props)}>stop</button>
+          <Button
+            sx={theme => ({
+              bgcolor: theme.palette.error.main,
+              color: theme.palette.error.contrastText,
+            })}
+            variant="outlined"
+            size="small"
+            onClick={() => endTodo(props)}
+          >
+            Stop
+          </Button>
         ) : (
-          <button onClick={() => startTodo(props)}>start</button>
+          <Button
+            sx={theme => ({
+              bgcolor: theme.palette.success.main,
+              color: theme.palette.success.contrastText,
+            })}
+            variant="outlined"
+            size="small"
+            onClick={() => startTodo(props)}
+          >
+            Start
+          </Button>
         )}
-        <button>update</button>
-      </div>
-    </div>
+        <Button
+          sx={theme => ({
+            bgcolor: theme.palette.error.main,
+            color: theme.palette.error.contrastText,
+          })}
+          variant="outlined"
+          size="small"
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 };
 

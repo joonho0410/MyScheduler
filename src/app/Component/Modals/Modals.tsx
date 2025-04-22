@@ -1,5 +1,5 @@
 import TodoModal from './AddTodoModal/AddTodoModal';
-import styles from './Modals.module.scss';
+import { TodoModalPropsType } from './AddTodoModal/AddTodoModal';
 import ShowTodayModal from './ShowTodayModal/ShowTodayModal';
 import TodoControllModal from './TodoControllerModal/TodoControllerModal';
 import { useModalActions, useModalList } from '@/Store/ModalStore';
@@ -32,30 +32,48 @@ const modalContainerStyle = {
   width: '80%', // 모달 크기 설정 (필요시 조정)
   maxWidth: '500px', // 모달의 최대 너비
   margin: '0 auto', // 중앙 정렬
-};
+}; 
 
-const getModal = (type: ModalType) => {
+const modalMap = {
+  create_Todo: (props: TodoModalPropsType) => <TodoModal {...props} />,
+  controll_Todo: () => <TodoControllModal />,
+  show_Today: () => <ShowTodayModal />,
+} as const;
+
+type ModalMap = typeof modalMap;
+
+export type ModalAndProps =
+  {
+    [K in keyof ModalMap]: Parameters<ModalMap[K]> extends [infer P]
+      ? [K, P]
+      : [K, undefined];
+  }[keyof ModalMap];
+
+
+const getModal = (modal: ModalAndProps) => {
+  const [type, props] = modal;
+
   switch (type) {
     case 'create_Todo':
-      return <TodoModal />;
+      return <TodoModal {...props} />;
     case 'controll_Todo':
       return <TodoControllModal />;
     case 'show_Today':
       return <ShowTodayModal />;
-    default:
-      null;
   }
 };
+  
 
 const Modals = () => {
   const modalList = useModalList();
 
   return (
     <>
-      {modalList.map((type, idx) => {
+      {modalList.map((modal, idx) => {
+        const [type, props] = modal;
         return (
           <Modals.Background key={type} type={type} idx={idx}>
-            <Modals.Container type={type}>{getModal(type)}</Modals.Container>
+            <Modals.Container type={type}>{getModal(modal)}</Modals.Container>
           </Modals.Background>
         );
       })}
@@ -87,22 +105,22 @@ const ModalsBackground = ({
   );
 };
 
+const exitButtonStyle = {
+  alignSelf: 'end',
+  color: 'grey.500',
+  '&:hover': {
+    color: 'grey.800',
+  },
+};
 const ModalsContainer = ({ type, children }: { type: ModalType; children: ReactNode }) => {
   const { deleteModal } = useModalActions();
 
   return (
-    <Box sx={modalContainerStyle} onClick={e => e.stopPropagation()}>
-      <IconButton
-        onClick={() => deleteModal(type)}
-        aria-label="close"
-        sx={{
-          alignSelf: 'end',
-          color: 'grey.500',
-          '&:hover': {
-            color: 'grey.800',
-          },
-        }}
-      >
+    <Box
+      sx={theme => ({ ...modalContainerStyle, bgcolor: theme.palette.custom.card.bg })}
+      onClick={e => e.stopPropagation()}
+    >
+      <IconButton onClick={() => deleteModal(type)} aria-label="close" sx={exitButtonStyle}>
         <Close />
       </IconButton>
       {children}
