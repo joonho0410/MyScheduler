@@ -6,17 +6,21 @@ import { useModalActions } from '@/Store/ModalStore';
 import { useTodoList } from '@/Store/TodoStore';
 import { Box } from '@mui/material';
 
-const TodoControllModal = () => {
+const ShowMainTaskModal = (_: {}) => {
   const todoList = useTodoList();
   const { setModal } = useModalActions();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '30vh' }}>
       <h2 className={styles.head}>오늘 할 일</h2>
-      <ListBox items={todoList} itemKey="todoId" ContentComponent={ListTodoItem} />
+      <ListBox
+        contents={todoList.map(e => (
+          <ListTodoItem key={e.todoId} {...e} />
+        ))}
+      />
       <BasicButton
         sx={{ width: '100%', justifySelf: 'end' }}
-        onClick={() => setModal({type:'create_Todo', props:{}})}
+        onClick={() => setModal({ type: 'add_mainTask', props: {} })}
       >
         할 일 추가
       </BasicButton>
@@ -24,4 +28,4 @@ const TodoControllModal = () => {
   );
 };
 
-export default TodoControllModal;
+export default ShowMainTaskModal;

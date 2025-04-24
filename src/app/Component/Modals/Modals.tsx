@@ -1,13 +1,12 @@
-import TodoModal from './AddTodoModal/AddTodoModal';
-import { TodoModalPropsType } from './AddTodoModal/AddTodoModal';
+import TodoModal from './AddMainTaskModal/AddMainTaskModal';
+import TodoControllModal from './ShowMaintaskModal/ShowMainTaskModal';
 import ShowTodayModal from './ShowTodayModal/ShowTodayModal';
-import TodoControllModal from './TodoControllerModal/TodoControllerModal';
 import { useModalActions, useModalList } from '@/Store/ModalStore';
-import { ModalType } from '@/Types/Modals';
+import { ModalType, modalMap } from '@/Types/Modals';
+import { ModalInstanceType } from '@/Types/Modals';
 import { Close } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
-import { ModalInstanceType } from '@/Types/Modals';
 
 const modalBackgroundStyle = {
   display: 'flex', // flexbox를 사용하여 배치
@@ -33,22 +32,11 @@ const modalContainerStyle = {
   width: '80%', // 모달 크기 설정 (필요시 조정)
   maxWidth: '500px', // 모달의 최대 너비
   margin: '0 auto', // 중앙 정렬
-}; 
-
+};
 
 const getModal = (modal: ModalInstanceType) => {
-  const {type, props} = modal;
-
-  switch (type) {
-    case 'create_Todo':
-      return <TodoModal {...props} />;
-    case 'controll_Todo':
-      return <TodoControllModal />;
-    case 'show_Today':
-      return <ShowTodayModal />;
-  }
+  return modal.props ? modalMap[modal.type](modal.props) : modalMap[modal.type]();
 };
-  
 
 const Modals = () => {
   const modalList = useModalList();

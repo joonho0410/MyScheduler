@@ -17,7 +17,7 @@ const makeData = (List: ScheduleTodoType[]): ChartTodoType[] => {
   return Array.from(map.values());
 };
 
-const ShowTodayModal = () => {
+const ShowTodayModal = ({ test }: { test?: string }) => {
   const [selectedTodo, setSelectedTodo] = useState<null | TodoType>(null);
   const TodayTodoList = useScheduleTodoList();
   const curDate = new Date();
@@ -44,7 +44,7 @@ const ShowDetail = ({ todo }: { todo: TodoType }) => {
   return (
     <div>
       <h1>{todo.head}</h1>
-      {todo.content}
+      {/* {todo.content} */}
     </div>
   );
 };

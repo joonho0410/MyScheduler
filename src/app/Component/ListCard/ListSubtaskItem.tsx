@@ -22,32 +22,32 @@ const containerStyle = {
   borderRadius: 2,
   backgroundColor: '#f9f9f9',
 };
+type SubtaskItemProps = TodoSubtaskType & {};
 
 const SubtaskItem = (subtask: TodoSubtaskType): React.JSX.Element => {
-  const { addTodo } = useTodoActions()
-  const {value: isUpdate, toggle: toggleUpdate} = useToggle();
-  const [title, setTitle] = useState(subtask.title)
+  const { addTodo } = useTodoActions();
+  const { value: isUpdate, toggle: toggleUpdate } = useToggle();
+  const [title, setTitle] = useState(subtask.title);
 
   const handleEditAndSave = () => {
     toggleUpdate();
-    
-    // Save 로직
-    if (isUpdate)  {
 
-      return ;
+    // Save 로직
+    if (isUpdate) {
+      return;
     }
-  }
+  };
 
   const handleDeleteAndCancel = () => {
     // Cancel Logic
     if (isUpdate) {
-      setTitle(subtask.title)
+      setTitle(subtask.title);
       toggleUpdate();
-      return ;
+      return;
     }
 
     // Delete Logic
-  }
+  };
 
   return (
     <Box key={subtask.id} sx={containerStyle}>
@@ -61,41 +61,40 @@ const SubtaskItem = (subtask: TodoSubtaskType): React.JSX.Element => {
         secondaryAction={
           <ButtonGroup variant="outlined" aria-label="Basic button group">
             <Button color="info" onClick={handleEditAndSave}>
-              { isUpdate ? 'Save' : 'Edit' }   
+              {isUpdate ? 'Save' : 'Edit'}
             </Button>
             <Button color="error" onClick={handleDeleteAndCancel}>
-              { isUpdate ? 'Cancel' : 'Delete' }
+              {isUpdate ? 'Cancel' : 'Delete'}
             </Button>
           </ButtonGroup>
         }
         disablePadding
       >
         <ListItemButton>
-        {isUpdate ? (
+          {isUpdate ? (
             <TextField
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
               size="small"
               fullWidth
               sx={{ maxWidth: 200 }}
             />
-          ) 
-          :
-          <ListItemText
-            primary={subtask.title}
-            slotProps={{
-              primary: {
-                noWrap: true,
-                sx: {
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: 200,
+          ) : (
+            <ListItemText
+              primary={subtask.title}
+              slotProps={{
+                primary: {
+                  noWrap: true,
+                  sx: {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    maxWidth: 200,
+                  },
                 },
-              },
-            }}
-          />
-}
+              }}
+            />
+          )}
         </ListItemButton>
       </ListItem>
     </Box>

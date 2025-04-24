@@ -23,27 +23,16 @@ const emptyBoxStyle = {
   alignItems: 'center',
 };
 
-type ChecklistProps<ListItem, Key extends keyof ListItem, P> = ListItem[Key] extends string | number
-  ? {
-      items: ListItem[];
-      itemKey: Key;
-      componentProps: P;
-      ContentComponent: ComponentType<ListItem & P>;
-    }
-  : never;
+type ChecklistProps = { contents: ReactNode };
 
-const ListBox = <GenericListItem, Key extends keyof GenericListItem, Component extends (...args: any) => React.JSX.Element>({
-  items,
-  itemKey,
-  ContentComponent,
-  componentProps
-}: ChecklistProps<GenericListItem, Key, Component>): React.JSX.Element => {
+const ListBox = ({ contents }: ChecklistProps): React.JSX.Element => {
   return (
     <List dense sx={ListDefaultStyle}>
-      {items.length === 0 && <Box sx={emptyBoxStyle}>😢 아무것도 등록되어 있지 않아요...</Box>}
+      {contents}
+      {/* {items.length === 0 && <Box sx={emptyBoxStyle}>😢 아무것도 등록되어 있지 않아요...</Box>}
       {items.map(item => (
         <ContentComponent key={item[itemKey] as string | number} {...item} {...componentProps ?? {}}/>
-      ))}
+      ))} */}
     </List>
   );
 };

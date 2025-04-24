@@ -3,10 +3,10 @@ import { ModalInstanceType } from '@/Types/Modals';
 import { create } from 'zustand';
 
 // 같은 모달이 중첩될 수 있나? 있다면 id 사용이 필요할듯?
-type ModalInstanceList = ModalInstanceType[]
+type ModalInstanceList = ModalInstanceType[];
 
 type State = {
-  modalList: ModalInstanceList
+  modalList: ModalInstanceList;
 };
 
 type Action = {
