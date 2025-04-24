@@ -9,7 +9,7 @@ export type TodoSubtaskType = {
   id: string;
   title: string;
   completed: boolean;
-};
+} & Pick<TodoType, 'todoId'>
 
 export type ChartTodoType = TodoType & {
   totalTime: number;

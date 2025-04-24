@@ -1,33 +1,33 @@
 import { ModalType } from '@/Types/Modals';
-import { ModalAndProps } from '@/app/Component/Modals/Modals';
+import { ModalInstanceType } from '@/Types/Modals';
 import { create } from 'zustand';
 
 // 같은 모달이 중첩될 수 있나? 있다면 id 사용이 필요할듯?
-type ModalListType = ModalAndProps[]
+type ModalInstanceList = ModalInstanceType[]
 
 type State = {
-  modalList: ModalListType
+  modalList: ModalInstanceList
 };
 
 type Action = {
   action: {
-    setModal: (modalType: ModalType) => void;
-    deleteModal: (modalType: ModalType) => void;
+    setModal: (modalInstance: ModalInstanceType) => void;
+    deleteModal: (modalType: Pick<ModalInstanceType, 'type'>['type']) => void;
   };
 };
 
 const useModalStore = create<State & Action>()(set => ({
   modalList: [],
   action: {
-    setModal: modalType =>
+    setModal: modalInstance =>
       set(state => {
-        for (let [type, props] of state.modalList) {
-          if (type === modalType) return state;
+        for (let instance of state.modalList) {
+          if (instance.type === modalInstance.type) return state;
         }
-        return { modalList: [...state.modalList, modalType] };
+        return { modalList: [...state.modalList, modalInstance] };
       }),
     deleteModal: modalType =>
-      set(state => ({ modalList: state.modalList.filter(e => e[0] !== modalType) })),
+      set(state => ({ modalList: state.modalList.filter(e => e.type !== modalType) })),
   },
 }));
 

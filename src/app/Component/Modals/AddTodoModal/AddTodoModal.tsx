@@ -22,6 +22,7 @@ const TodoModal = ({ update = false }: TodoModalPropsType) => {
   const addSubtask = () => {
     if (!todoInputRef.current) return;
     const newSubtask: TodoSubtaskType = {
+      todoId: String(id + 1),
       id: String(++id),
       title: todoInputRef.current.value,
       completed: false,
@@ -41,7 +42,7 @@ const TodoModal = ({ update = false }: TodoModalPropsType) => {
       content: subtasks,
       isActive: false,
     };
-    console.log(newTodo);
+    
     addTodo(newTodo);
     deleteModal('create_Todo');
   };

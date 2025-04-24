@@ -1,4 +1,7 @@
 // components/SubtaskItem.tsx
+import { useToggle } from '@/Hooks/useToggle';
+import { useTodoActions } from '@/Store/TodoStore';
+import { TodoSubtaskType } from '@/Types/Todo';
 import {
   Checkbox,
   ButtonGroup,
@@ -7,8 +10,9 @@ import {
   ListItemButton,
   ListItemText,
   Box,
+  TextField,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 const containerStyle = {
   display: 'flex',
@@ -19,10 +23,31 @@ const containerStyle = {
   backgroundColor: '#f9f9f9',
 };
 
-type SubtaskItemProps = { id: string; title: string; completed: boolean };
+const SubtaskItem = (subtask: TodoSubtaskType): React.JSX.Element => {
+  const { addTodo } = useTodoActions()
+  const {value: isUpdate, toggle: toggleUpdate} = useToggle();
+  const [title, setTitle] = useState(subtask.title)
 
-const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
-  const dummy = () => {};
+  const handleEditAndSave = () => {
+    toggleUpdate();
+    
+    // Save 로직
+    if (isUpdate)  {
+
+      return ;
+    }
+  }
+
+  const handleDeleteAndCancel = () => {
+    // Cancel Logic
+    if (isUpdate) {
+      setTitle(subtask.title)
+      toggleUpdate();
+      return ;
+    }
+
+    // Delete Logic
+  }
 
   return (
     <Box key={subtask.id} sx={containerStyle}>
@@ -35,19 +60,27 @@ const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
       <ListItem
         secondaryAction={
           <ButtonGroup variant="outlined" aria-label="Basic button group">
-            <Button color="info" onClick={dummy}>
-              {' '}
-              Edit{' '}
+            <Button color="info" onClick={handleEditAndSave}>
+              { isUpdate ? 'Save' : 'Edit' }   
             </Button>
-            <Button color="error" onClick={dummy}>
-              {' '}
-              Delete{' '}
+            <Button color="error" onClick={handleDeleteAndCancel}>
+              { isUpdate ? 'Cancel' : 'Delete' }
             </Button>
           </ButtonGroup>
         }
         disablePadding
       >
         <ListItemButton>
+        {isUpdate ? (
+            <TextField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              size="small"
+              fullWidth
+              sx={{ maxWidth: 200 }}
+            />
+          ) 
+          :
           <ListItemText
             primary={subtask.title}
             slotProps={{
@@ -62,6 +95,7 @@ const SubtaskItem = (subtask: SubtaskItemProps): React.JSX.Element => {
               },
             }}
           />
+}
         </ListItemButton>
       </ListItem>
     </Box>

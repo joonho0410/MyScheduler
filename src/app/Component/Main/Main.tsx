@@ -14,7 +14,7 @@ const Main = () => {
   return (
     <div className={styles.main}>
       <BasicButton
-        onClick={() => setModal('controll_Todo')}
+        onClick={() => setModal({type: 'controll_Todo'})}
         sx={{
           position: 'absolute',
           top: '40px',
@@ -24,7 +24,7 @@ const Main = () => {
         할 일 추가
       </BasicButton>
       <BasicButton
-        onClick={() => setModal('show_Today')}
+        onClick={() => setModal({type: 'show_Today'})}
         sx={{
           position: 'absolute',
           bottom: '40px',

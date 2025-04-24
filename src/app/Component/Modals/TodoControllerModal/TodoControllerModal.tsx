@@ -16,7 +16,7 @@ const TodoControllModal = () => {
       <ListBox items={todoList} itemKey="todoId" ContentComponent={ListTodoItem} />
       <BasicButton
         sx={{ width: '100%', justifySelf: 'end' }}
-        onClick={() => setModal('create_Todo')}
+        onClick={() => setModal({type:'create_Todo', props:{}})}
       >
         할 일 추가
       </BasicButton>

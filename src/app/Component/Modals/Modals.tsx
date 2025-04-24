@@ -7,6 +7,7 @@ import { ModalType } from '@/Types/Modals';
 import { Close } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
+import { ModalInstanceType } from '@/Types/Modals';
 
 const modalBackgroundStyle = {
   display: 'flex', // flexbox를 사용하여 배치
@@ -34,24 +35,9 @@ const modalContainerStyle = {
   margin: '0 auto', // 중앙 정렬
 }; 
 
-const modalMap = {
-  create_Todo: (props: TodoModalPropsType) => <TodoModal {...props} />,
-  controll_Todo: () => <TodoControllModal />,
-  show_Today: () => <ShowTodayModal />,
-} as const;
 
-type ModalMap = typeof modalMap;
-
-export type ModalAndProps =
-  {
-    [K in keyof ModalMap]: Parameters<ModalMap[K]> extends [infer P]
-      ? [K, P]
-      : [K, undefined];
-  }[keyof ModalMap];
-
-
-const getModal = (modal: ModalAndProps) => {
-  const [type, props] = modal;
+const getModal = (modal: ModalInstanceType) => {
+  const {type, props} = modal;
 
   switch (type) {
     case 'create_Todo':
@@ -69,11 +55,11 @@ const Modals = () => {
 
   return (
     <>
-      {modalList.map((modal, idx) => {
-        const [type, props] = modal;
+      {modalList.map((modalInstance, idx) => {
+        const { type } = modalInstance;
         return (
           <Modals.Background key={type} type={type} idx={idx}>
-            <Modals.Container type={type}>{getModal(modal)}</Modals.Container>
+            <Modals.Container type={type}>{getModal(modalInstance)}</Modals.Container>
           </Modals.Background>
         );
       })}
