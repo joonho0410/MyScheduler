@@ -1,9 +1,5 @@
-import TodoModal from './AddMainTaskModal/AddMainTaskModal';
-import TodoControllModal from './ShowMaintaskModal/ShowMainTaskModal';
-import ShowTodayModal from './ShowTodayModal/ShowTodayModal';
 import { useModalActions, useModalList } from '@/Store/ModalStore';
-import { ModalType, modalMap } from '@/Types/Modals';
-import { ModalInstanceType } from '@/Types/Modals';
+import { ModalType, renderModal } from '@/Types/Modals';
 import { Close } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
@@ -34,10 +30,6 @@ const modalContainerStyle = {
   margin: '0 auto', // 중앙 정렬
 };
 
-const getModal = (modal: ModalInstanceType) => {
-  return modal.props ? modalMap[modal.type](modal.props) : modalMap[modal.type]();
-};
-
 const Modals = () => {
   const modalList = useModalList();
 
@@ -47,7 +39,7 @@ const Modals = () => {
         const { type } = modalInstance;
         return (
           <Modals.Background key={type} type={type} idx={idx}>
-            <Modals.Container type={type}>{getModal(modalInstance)}</Modals.Container>
+            <Modals.Container type={type}>{renderModal(modalInstance)}</Modals.Container>
           </Modals.Background>
         );
       })}

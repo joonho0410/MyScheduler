@@ -14,7 +14,7 @@ const Main = () => {
   return (
     <div className={styles.main}>
       <BasicButton
-        onClick={() => setModal({ type: 'show_mainTask', props: {} })}
+        onClick={() => setModal({ type: 'show_mainTask', props: {key: 'hello'} })}
         sx={{
           position: 'absolute',
           top: '40px',
