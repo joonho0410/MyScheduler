@@ -27,7 +27,7 @@ type ModalMap = CheckValidMap<typeof modalMap>;
 type CheckValidMap<T extends Record<string, (...args: any[]) => React.JSX.Element>> = T
 
 // type ModalMap = CheckValidMap<typeof modalMap>;
-export type ModalType = keyof typeof modalMap
+export type ModalType = keyof ModalMap
 
 // ModalInstance가 가지고 있을 수 있는 타입들을 찾아주는 역할.
 // [modalType, modalType에 맞는 Props]들을 타입으로 갖게 된다.
