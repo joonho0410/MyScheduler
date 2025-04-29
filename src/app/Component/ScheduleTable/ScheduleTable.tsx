@@ -4,6 +4,7 @@ import Todo from '../TodoCard/Todo';
 import styles from './ScheduleTable.module.scss';
 import useDragMove from '@/Hooks/useDragMove';
 import { useScheduleTodoList, useCurrentTodo } from '@/Store/TodoStore';
+import { useRef } from 'react';
 
 const timeArray: string[] = [];
 
@@ -14,12 +15,13 @@ for (let i = 0; i < 24; i++) {
 const ScheduleTable = () => {
   const todoList = useScheduleTodoList();
   const currentTodo = useCurrentTodo();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   console.log(todoList, currentTodo);
 
   return (
-    <div className={styles.container}>
-      <ScheduleTable.TimeTable>
+    <div className={styles.container} ref={containerRef}>
+      <ScheduleTable.TimeTable containerRef={containerRef}>
         {todoList.map(todo => {
           if (!todo.startTime) return null;
           return <Todo key={todo.scheduleId} {...todo}></Todo>;
@@ -29,13 +31,22 @@ const ScheduleTable = () => {
   );
 };
 
-const TimeTable = ({ children }: { children?: any }) => {
-  const { position, handleMouseDown } = useDragMove();
+const TimeTable = ({
+  children,
+  containerRef,
+}: {
+  children?: any;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) => {
+  const timeTableRef = useRef<HTMLDivElement>(null);
+  const { position, handleMouseDown } = useDragMove(containerRef, timeTableRef);
 
   return (
     <div
+      ref={timeTableRef}
       className={styles.timeTable}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       style={{ left: `${position.x}px` }}
     >
       {timeArray.map((time: string) => {
