@@ -15,7 +15,7 @@ const useDragMove = (
   const [isDragging, setIsDragging] = useState(false);
 
   const handleMouseDown = (ev: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
-    ev.preventDefault();
+    if (ev instanceof MouseEvent) ev.preventDefault();
     const startX = 'clientX' in ev ? ev.clientX : ev.touches[0].clientX;
     setStart({ x: startX });
     setIsDragging(true);
