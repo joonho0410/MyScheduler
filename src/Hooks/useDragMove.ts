@@ -14,14 +14,14 @@ const useDragMove = (
   const [start, setStart] = useState<MousePosition | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
-    e.preventDefault();
-    const startX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+  const handleMouseDown = (ev: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    ev.preventDefault();
+    const startX = 'clientX' in ev ? ev.clientX : ev.touches[0].clientX;
     setStart({ x: startX });
     setIsDragging(true);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+  const handleMouseMove = (e: MouseEvent | TouchEvent) => {
     if (!isDragging || !start) return;
 
     const x = 'clientX' in e ? e.clientX : e.touches[0].clientX;
@@ -49,35 +49,18 @@ const useDragMove = (
 
   // 이벤트 전역 등록
   useEffect(() => {
-    const handleMouseMoveEvent = (e: MouseEvent | TouchEvent) => {
-      const event =
-        e instanceof MouseEvent
-          ? (e as unknown as React.MouseEvent<HTMLElement>)
-          : (e as unknown as React.TouchEvent<HTMLElement>);
-      handleMouseMove(event);
-    };
-
-    const handleMouseUpEvent = () => {
-      handleMouseUp();
-    };
-
     if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMoveEvent);
-      window.addEventListener('touchmove', handleMouseMoveEvent);
-      window.addEventListener('mouseup', handleMouseUpEvent);
-      window.addEventListener('touchend', handleMouseUpEvent);
-    } else {
-      window.removeEventListener('mousemove', handleMouseMoveEvent);
-      window.removeEventListener('touchmove', handleMouseMoveEvent);
-      window.removeEventListener('mouseup', handleMouseUpEvent);
-      window.removeEventListener('touchend', handleMouseUpEvent);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('touchmove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('touchend', handleMouseUp);
     }
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMoveEvent);
-      window.removeEventListener('touchmove', handleMouseMoveEvent);
-      window.removeEventListener('mouseup', handleMouseUpEvent);
-      window.removeEventListener('touchend', handleMouseUpEvent);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchend', handleMouseUp);
     };
   }, [isDragging, start]);
 
