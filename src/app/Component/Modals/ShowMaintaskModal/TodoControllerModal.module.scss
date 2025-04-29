@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  height: 30vh;
+  color: black;
+  .head {
+    font-size: 24px;
+    color: black;
+  }
+  .todos {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+}
+
+.TodoContent {
+  &__container {
+    display: flex;
+    width: 100%;
+    padding: 24px 12px;
+  }
+  &__content {
+    flex: 1 1 auto; /* 남는 공간을 차지하게 */
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &__buttons {
+    display: flex;
+    gap: 6px;
+    white-space: nowrap;
+  }
+}

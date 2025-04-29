@@ -1,5 +1,7 @@
 .main {
-    width: 100%;
-    flex-grow: 1;
-    background-color: white;
+  position: relative;
+  width: 100%;
+  flex-grow: 1;
+  background: url('/images/landscape.png') no-repeat center center;
+  background-size: 100% 100%;
 }

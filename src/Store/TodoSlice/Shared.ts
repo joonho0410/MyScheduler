@@ -1,25 +1,13 @@
-import { StateCreator } from "zustand";
-import { TodoType } from "@/Types/Todo";
-import { TodoStoreType } from "../TodoStore";
+import { TodoStoreType } from '../TodoStore';
+import { TodoType } from '@/Types/Todo';
+import { StateCreator } from 'zustand';
 
+type State = {};
 
-type State = {
-    
-}
+type Action = {};
 
-type Action = {
-    
-}
+export type SharedSliceType = State & Action;
 
-export type SharedSliceType = State & Action
+const SharedSlice: StateCreator<TodoStoreType, [], [], SharedSliceType> = set => ({});
 
-const SharedSlice: StateCreator<
-    TodoStoreType,
-    [],
-    [],
-    SharedSliceType
-> = (set) => ({
-       
-})
-
-export default SharedSlice
+export default SharedSlice;
