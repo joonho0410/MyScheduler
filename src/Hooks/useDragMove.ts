@@ -1,5 +1,6 @@
 'use client';
 
+import { calculateMinutes } from '@/Utils/calculateTime';
 import { useState, useEffect } from 'react';
 
 type MousePosition = {
@@ -63,6 +64,24 @@ const useDragMove = (
       window.removeEventListener('touchend', handleMouseUp);
     };
   }, [isDragging]);
+
+  useEffect(() => {
+    if (!timeTableRef.current || !containerRef.current) return ;
+    const now = new Date();
+    const ratio = calculateMinutes(now) / 1440;
+    const containerWidth = containerRef.current.offsetWidth;
+    const timeTableWidth = timeTableRef.current.offsetWidth;
+
+    let initialPositionX = -timeTableWidth * ratio
+    
+    const maxLeft = 0; // 최소값: 0
+    const minLeft = containerWidth - timeTableWidth; // 최대값: 부모 컴포넌트의 너비 - TimeTable의 너비
+
+    initialPositionX = initialPositionX > maxLeft ? maxLeft : initialPositionX;
+    initialPositionX = initialPositionX < minLeft ? minLeft : initialPositionX;
+    
+    setPosition({ x: initialPositionX })
+  }, [timeTableRef.current])
 
   return { handleMouseDown, position };
 };
