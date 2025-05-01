@@ -12,7 +12,7 @@ const modalStyle = {
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
-}
+};
 
 const AddMainTaskModal = (_: {}) => {
   const [subtasks, setSubtasks] = useState<TodoSubtaskType[]>([]);
@@ -23,7 +23,7 @@ const AddMainTaskModal = (_: {}) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const todoId = String(++id)
+    const todoId = String(++id);
     const newTodo: TodoType = {
       todoId: todoId,
       head: formData.get('head') as string,
@@ -38,11 +38,7 @@ const AddMainTaskModal = (_: {}) => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={addNewTodo}
-      sx={modalStyle}
-    >
+    <Box component="form" onSubmit={addNewTodo} sx={modalStyle}>
       <AddMainTaskModal.TaskForm setSubtasks={setSubtasks} />
       <AddMainTaskModal.SubTaskList subtasks={subtasks} setSubtasks={setSubtasks} />
       <BasicButton type="submit"> 새 할일 등록 </BasicButton>
@@ -93,18 +89,25 @@ const TaskForm = ({
   );
 };
 
-const SubTaskList = ({ subtasks, setSubtasks }: { subtasks: TodoSubtaskType[], setSubtasks: Dispatch<SetStateAction<TodoSubtaskType[]>>}) => {
-  
+const SubTaskList = ({
+  subtasks,
+  setSubtasks,
+}: {
+  subtasks: TodoSubtaskType[];
+  setSubtasks: Dispatch<SetStateAction<TodoSubtaskType[]>>;
+}) => {
   const handleUpdate = (newSubtask: TodoSubtaskType) => {
-    setSubtasks((prev) => prev.map((subtask) => {
-      if (subtask.id === subtask.id) return newSubtask;
-      return subtask
-    }))
-  }
+    setSubtasks(prev =>
+      prev.map(subtask => {
+        if (subtask.id === subtask.id) return newSubtask;
+        return subtask;
+      }),
+    );
+  };
 
   const handleDelete = (deletedSubtask: TodoSubtaskType) => {
-    setSubtasks((prev) => prev.filter((subtask) => subtask.id !== deletedSubtask.id))
-  }
+    setSubtasks(prev => prev.filter(subtask => subtask.id !== deletedSubtask.id));
+  };
 
   return (
     <>
@@ -114,7 +117,12 @@ const SubTaskList = ({ subtasks, setSubtasks }: { subtasks: TodoSubtaskType[], s
 
       <ListBox
         contents={subtasks.map(subtask => (
-          <SubtaskItem key={subtask.id} handleUpdate={handleUpdate} handleDelete={handleDelete} {...subtask} />
+          <SubtaskItem
+            key={subtask.id}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            {...subtask}
+          />
         ))}
       />
     </>

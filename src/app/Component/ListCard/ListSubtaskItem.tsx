@@ -21,30 +21,42 @@ const containerStyle = {
   borderRadius: 2,
   backgroundColor: '#f9f9f9',
 };
-type SubtaskItemProps = TodoSubtaskType & {handleUpdate: (...args: any[]) => any, handleDelete: (...args: any[]) => any};
+type SubtaskItemProps = TodoSubtaskType & {
+  handleUpdate: (...args: any[]) => any;
+  handleDelete: (...args: any[]) => any;
+};
 
-const SubtaskItem = ({id, title, completed, todoId, handleDelete, handleUpdate } : SubtaskItemProps): React.JSX.Element => {
+const SubtaskItem = ({
+  id,
+  title,
+  completed,
+  todoId,
+  handleDelete,
+  handleUpdate,
+}: SubtaskItemProps): React.JSX.Element => {
   const { value: isUpdate, toggle: toggleUpdate } = useToggle();
-  const [saveTitle, setSaveTitle] = useState(title)
+  const [saveTitle, setSaveTitle] = useState(title);
   const [subtask, setSubtask] = useState<TodoSubtaskType>({
     id,
     title,
     completed,
-    todoId
-  })
+    todoId,
+  });
 
   const handleEditAndSave = () => {
     toggleUpdate();
 
     // Save 로직
-    if (!isUpdate) setSaveTitle(subtask.title)
+    if (!isUpdate) setSaveTitle(subtask.title);
     if (isUpdate) handleUpdate(subtask);
   };
 
   const handleDeleteAndCancel = () => {
     // Cancel Logic
     if (isUpdate) {
-      setSubtask((prev) => { return {...prev, title: saveTitle} });
+      setSubtask(prev => {
+        return { ...prev, title: saveTitle };
+      });
       toggleUpdate();
       return;
     }
@@ -58,7 +70,11 @@ const SubtaskItem = ({id, title, completed, todoId, handleDelete, handleUpdate }
       <Checkbox
         color="success"
         edge="end"
-        onChange={(e) => setSubtask((prev) => { return {...prev, completed: e.target.checked }})}
+        onChange={e =>
+          setSubtask(prev => {
+            return { ...prev, completed: e.target.checked };
+          })
+        }
         checked={subtask.completed}
       />
       <ListItem
@@ -75,42 +91,49 @@ const SubtaskItem = ({id, title, completed, todoId, handleDelete, handleUpdate }
         disablePadding
       >
         <ListItemButton>
-          {isUpdate ? <UpdateInput title={subtask.title} setSubtask={setSubtask}/> : <NormalInput title={subtask.title}/>}
+          {isUpdate ? (
+            <UpdateInput title={subtask.title} setSubtask={setSubtask} />
+          ) : (
+            <NormalInput title={subtask.title} />
+          )}
         </ListItemButton>
       </ListItem>
     </Box>
   );
 };
 
-const UpdateInput = ({ title, setSubtask }: {title: string, setSubtask: any}) => {
-
+const UpdateInput = ({ title, setSubtask }: { title: string; setSubtask: any }) => {
   return (
-    (
-      <TextField
-        value={title}
-        onChange={e => setSubtask((prev: TodoSubtaskType) => {return {...prev, title: e.target.value}})}
-        size="small"
-        fullWidth
-        sx={{ maxWidth: 200 }}
-      />
-    )
-  )
-}
+    <TextField
+      value={title}
+      onChange={e =>
+        setSubtask((prev: TodoSubtaskType) => {
+          return { ...prev, title: e.target.value };
+        })
+      }
+      size="small"
+      fullWidth
+      sx={{ maxWidth: 200 }}
+    />
+  );
+};
 
-const NormalInput = ({ title } : {title: string}) => {
-  return (<ListItemText
-    primary={title}
-    slotProps={{
-      primary: {
-        noWrap: true,
-        sx: {
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          maxWidth: 200,
+const NormalInput = ({ title }: { title: string }) => {
+  return (
+    <ListItemText
+      primary={title}
+      slotProps={{
+        primary: {
+          noWrap: true,
+          sx: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            maxWidth: 200,
+          },
         },
-      },
-    }}
-  />)
-}
+      }}
+    />
+  );
+};
 export default SubtaskItem;
