@@ -75,34 +75,42 @@ const SubtaskItem = ({id, title, completed, todoId, handleDelete, handleUpdate }
         disablePadding
       >
         <ListItemButton>
-          {isUpdate ? (
-            <TextField
-              value={subtask.title}
-              onChange={e => setSubtask((prev) => {return {...prev, title: e.target.value}})}
-              size="small"
-              fullWidth
-              sx={{ maxWidth: 200 }}
-            />
-          ) : (
-            <ListItemText
-              primary={title}
-              slotProps={{
-                primary: {
-                  noWrap: true,
-                  sx: {
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    maxWidth: 200,
-                  },
-                },
-              }}
-            />
-          )}
+          {isUpdate ? <UpdateInput title={subtask.title} setSubtask={setSubtask}/> : <NormalInput title={subtask.title}/>}
         </ListItemButton>
       </ListItem>
     </Box>
   );
 };
 
+const UpdateInput = ({ title, setSubtask }: {title: string, setSubtask: any}) => {
+
+  return (
+    (
+      <TextField
+        value={title}
+        onChange={e => setSubtask((prev: TodoSubtaskType) => {return {...prev, title: e.target.value}})}
+        size="small"
+        fullWidth
+        sx={{ maxWidth: 200 }}
+      />
+    )
+  )
+}
+
+const NormalInput = ({ title } : {title: string}) => {
+  return (<ListItemText
+    primary={title}
+    slotProps={{
+      primary: {
+        noWrap: true,
+        sx: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          maxWidth: 200,
+        },
+      },
+    }}
+  />)
+}
 export default SubtaskItem;
