@@ -1,7 +1,7 @@
 export type TodoType = {
   todoId: string;
   head: string;
-  content: string | TodoSubtaskType[];
+  content: TodoSubtaskType[];
   isActive: boolean;
 };
 

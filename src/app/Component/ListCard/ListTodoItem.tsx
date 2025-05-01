@@ -1,3 +1,4 @@
+import { useModalActions } from '@/Store/ModalStore';
 import { useTodoActions } from '@/Store/TodoStore';
 import { TodoType } from '@/Types/Todo';
 import { Box, Button, ButtonGroup } from '@mui/material';
@@ -23,9 +24,10 @@ const headTextStyle = {
 
 const ListTodoItem = (props: TodoType) => {
   const { startTodo, endTodo, deleteTodo } = useTodoActions();
+  const { setModal } = useModalActions();
 
   return (
-    <Box sx={containerStyle} onClick={() => console.log('onclick')}>
+    <Box sx={containerStyle} onClick={() => setModal({type: 'update_mainTask', props})}>
       <Box sx={headTextStyle}>{props.head}</Box>
       <ButtonGroup size="small" variant="outlined" aria-label="Basic button group">
         {props.isActive ? (
@@ -36,7 +38,7 @@ const ListTodoItem = (props: TodoType) => {
             })}
             variant="outlined"
             size="small"
-            onClick={() => endTodo(props)}
+            onClick={(e) => {e.stopPropagation(); endTodo(props)}}
           >
             Stop
           </Button>
@@ -48,7 +50,7 @@ const ListTodoItem = (props: TodoType) => {
             })}
             variant="outlined"
             size="small"
-            onClick={() => startTodo(props)}
+            onClick={(e) => {e.stopPropagation(); startTodo(props)}}
           >
             Start
           </Button>

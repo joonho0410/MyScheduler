@@ -5,55 +5,53 @@ import { useModalActions } from '@/Store/ModalStore';
 import { useTodoActions } from '@/Store/TodoStore';
 import { TodoSubtaskType, TodoType } from '@/Types/Todo';
 import { TextField, Box, Divider } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useRef, useState, Dispatch, SetStateAction } from 'react';
 
 let id = 1;
+const modalStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+};
 
-const UpdateMainTaskModal = ({ todoId }: Pick<TodoType, 'todoId'>) => {
-  const [subtasks, setSubtasks] = useState<TodoSubtaskType[]>([]);
-  const todoInputRef = useRef<null | HTMLInputElement>(null);
-  const { deleteModal } = useModalActions();
-  const { addTodo } = useTodoActions();
+const UpdateMainTaskModal = ({todoId, head, content, isActive }: TodoType) => {
+  const [subtasks, setSubtasks] = useState<TodoSubtaskType[]>(content);
 
-  const addSubtask = () => {
-    if (!todoInputRef.current) return;
-    const newSubtask: TodoSubtaskType = {
-      todoId: String(id + 1),
-      id: String(++id),
-      title: todoInputRef.current.value,
-      completed: false,
-    };
-    todoInputRef.current.value = '';
-    setSubtasks(prev => [...prev, newSubtask]);
-  };
+  const handleSave = (e: any) => {
 
-  const submitTodo = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-
-    const newTodo: TodoType = {
-      todoId: String(++id),
-      head: formData.get('head') as string,
-      content: subtasks,
-      isActive: false,
-    };
-
-    addTodo(newTodo);
-    deleteModal('add_mainTask');
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={submitTodo}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-      }}
-    >
-      <TextField id="head" name="head" label="제목" variant="standard" />
+    <Box sx={modalStyle}>
+      <TextField disabled value={head} id="head" name="head" label="제목" variant="standard" />
+      <UpdateMainTaskModal.TaskForm setSubtasks={setSubtasks} />
+      <UpdateMainTaskModal.SubTaskList subtasks={subtasks} setSubtasks={setSubtasks} />
+      <BasicButton onClick={handleSave}> 저장 하기 </BasicButton>
+    </Box>
+  );
+};
+
+const TaskForm = ({
+  setSubtasks,
+}: {
+  setSubtasks: Dispatch<SetStateAction<TodoSubtaskType[]>>;
+}) => {
+  const subtaskRef = useRef<null | HTMLInputElement>(null);
+
+  const addSubtask = () => {
+    if (!subtaskRef.current) return;
+    const newSubtask: TodoSubtaskType = {
+      todoId: 'not Registred',
+      id: String(++id),
+      title: subtaskRef.current.value,
+      completed: false,
+    };
+    subtaskRef.current.value = '';
+    setSubtasks(prev => [...prev, newSubtask]);
+  };
+
+  return (
+    <>
       <Box
         sx={{
           display: 'flex',
@@ -61,29 +59,61 @@ const UpdateMainTaskModal = ({ todoId }: Pick<TodoType, 'todoId'>) => {
         }}
       >
         <TextField
-          inputRef={todoInputRef}
+          inputRef={subtaskRef}
           sx={{ flex: '1 1 auto' }}
           id="todo"
           label="할 일 추가"
           variant="standard"
         />
         <BasicButton sx={{ alignSelf: 'end' }} onClick={addSubtask}>
-          {' '}
-          추가{' '}
+          추가
         </BasicButton>
       </Box>
+    </>
+  );
+};
+
+const SubTaskList = ({
+  subtasks,
+  setSubtasks,
+}: {
+  subtasks: TodoSubtaskType[];
+  setSubtasks: Dispatch<SetStateAction<TodoSubtaskType[]>>;
+}) => {
+  const handleUpdate = (newSubtask: TodoSubtaskType) => {
+    setSubtasks(prev =>
+      prev.map(subtask => {
+        if (subtask.id === subtask.id) return newSubtask;
+        return subtask;
+      }),
+    );
+  };
+
+  const handleDelete = (deletedSubtask: TodoSubtaskType) => {
+    setSubtasks(prev => prev.filter(subtask => subtask.id !== deletedSubtask.id));
+  };
+
+  return (
+    <>
       <Divider textAlign="left" sx={{ padding: '20px 20px 0px 20px', color: 'black' }}>
         <h3>할 일 목록</h3>
       </Divider>
 
       <ListBox
-        contents={subtasks.map(e => (
-          <SubtaskItem key={e.id} {...e} />
+        contents={subtasks.map(subtask => (
+          <SubtaskItem
+            key={subtask.id}
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            {...subtask}
+          />
         ))}
       />
-      <BasicButton type="submit"> 새 할일 등록 </BasicButton>
-    </Box>
+    </>
   );
 };
+
+UpdateMainTaskModal.TaskForm = TaskForm;
+UpdateMainTaskModal.SubTaskList = SubTaskList;
 
 export default UpdateMainTaskModal;
