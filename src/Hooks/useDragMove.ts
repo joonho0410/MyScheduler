@@ -15,6 +15,7 @@ const useDragMove = (
   const [isDragging, setIsDragging] = useState(false);
 
   const handleMouseDown = (ev: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => {
+    ev.preventDefault();
     const startX = 'clientX' in ev ? ev.clientX : ev.touches[0].clientX;
     setStart({ x: startX });
     setIsDragging(true);
@@ -61,7 +62,7 @@ const useDragMove = (
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('touchend', handleMouseUp);
     };
-  }, [isDragging, start]);
+  }, [isDragging]);
 
   return { handleMouseDown, position };
 };

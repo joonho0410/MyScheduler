@@ -1,6 +1,5 @@
 // components/SubtaskItem.tsx
 import { useToggle } from '@/Hooks/useToggle';
-import { useTodoActions } from '@/Store/TodoStore';
 import { TodoSubtaskType } from '@/Types/Todo';
 import {
   Checkbox,
@@ -22,39 +21,44 @@ const containerStyle = {
   borderRadius: 2,
   backgroundColor: '#f9f9f9',
 };
-type SubtaskItemProps = TodoSubtaskType & {};
+type SubtaskItemProps = TodoSubtaskType & {handleUpdate: (...args: any[]) => any, handleDelete: (...args: any[]) => any};
 
-const SubtaskItem = (subtask: TodoSubtaskType): React.JSX.Element => {
-  const { addTodo } = useTodoActions();
+const SubtaskItem = ({id, title, completed, todoId, handleDelete, handleUpdate } : SubtaskItemProps): React.JSX.Element => {
   const { value: isUpdate, toggle: toggleUpdate } = useToggle();
-  const [title, setTitle] = useState(subtask.title);
+  const [saveTitle, setSaveTitle] = useState(title)
+  const [subtask, setSubtask] = useState<TodoSubtaskType>({
+    id,
+    title,
+    completed,
+    todoId
+  })
 
   const handleEditAndSave = () => {
     toggleUpdate();
 
     // Save 로직
-    if (isUpdate) {
-      return;
-    }
+    if (!isUpdate) setSaveTitle(subtask.title)
+    if (isUpdate) handleUpdate(subtask);
   };
 
   const handleDeleteAndCancel = () => {
     // Cancel Logic
     if (isUpdate) {
-      setTitle(subtask.title);
+      setSubtask((prev) => { return {...prev, title: saveTitle} });
       toggleUpdate();
       return;
     }
 
     // Delete Logic
+    handleDelete(subtask);
   };
 
   return (
-    <Box key={subtask.id} sx={containerStyle}>
+    <Box key={id} sx={containerStyle}>
       <Checkbox
         color="success"
         edge="end"
-        onChange={() => console.log()}
+        onChange={(e) => setSubtask((prev) => { return {...prev, completed: e.target.checked }})}
         checked={subtask.completed}
       />
       <ListItem
@@ -73,15 +77,15 @@ const SubtaskItem = (subtask: TodoSubtaskType): React.JSX.Element => {
         <ListItemButton>
           {isUpdate ? (
             <TextField
-              value={title}
-              onChange={e => setTitle(e.target.value)}
+              value={subtask.title}
+              onChange={e => setSubtask((prev) => {return {...prev, title: e.target.value}})}
               size="small"
               fullWidth
               sx={{ maxWidth: 200 }}
             />
           ) : (
             <ListItemText
-              primary={subtask.title}
+              primary={title}
               slotProps={{
                 primary: {
                   noWrap: true,
